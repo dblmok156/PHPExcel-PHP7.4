@@ -36,9 +36,15 @@
         "ext-zip": "*",
         "ext-gd": "*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dblmok156/PHPExcel-PHP7.4.git"
+        }
+    ],
     "autoload": {
         "psr-0": {
-            "PHPExcel": "Classes/"
+            "dblmok156\\phpoffice-7.4\\": "Classes/"
         }
     }
 }
