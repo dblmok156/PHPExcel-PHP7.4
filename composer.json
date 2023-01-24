@@ -37,7 +37,7 @@
         "ext-gd": "*"
     },
     "autoload": {
-        "psr-4": {
+        "psr-0": {
             "dblmok156\\phpexcel\\": "Classes/"
         }
     }
