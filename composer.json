@@ -43,7 +43,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "dblmok156\\phpoffice-7.4\\": "Classes/"
         }
     }
