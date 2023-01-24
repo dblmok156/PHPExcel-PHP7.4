@@ -38,7 +38,7 @@
     },
     "autoload": {
         "psr-0": {
-            "dblmok156\\phpexcel\\": "Classes/"
+            "PHPExcel": "Classes/"
         }
     }
 }
