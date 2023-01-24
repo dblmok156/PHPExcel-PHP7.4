@@ -28,6 +28,7 @@
         "ext-xml": "*",
         "ext-xmlwriter": "*"
     },
+    "minimum-stability": "stable",
     "require-dev": {
         "squizlabs/php_codesniffer": "2.*"
     },
