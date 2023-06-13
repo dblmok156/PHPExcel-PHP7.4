@@ -37,7 +37,7 @@ date_default_timezone_set('Europe/London');
  */
 
 /** Include path **/
-set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . '/../Classes/');
+set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . '/../Classes/');
 
 /** PHPExcel_IOFactory */
 include 'PHPExcel/IOFactory.php';
@@ -91,7 +91,7 @@ $inputFileNames = 'templates/36write*.xlsx';
 if ((isset($argc)) && ($argc > 1)) {
 	$inputFileNames = array();
 	for($i = 1; $i < $argc; ++$i) {
-		$inputFileNames[] = dirname(__FILE__) . '/templates/' . $argv[$i];
+		$inputFileNames[] = __DIR__ . '/templates/' . $argv[$i];
 	}
 } else {
 	$inputFileNames = glob($inputFileNames);

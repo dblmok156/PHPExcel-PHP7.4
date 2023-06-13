@@ -37,7 +37,7 @@ date_default_timezone_set('Europe/London');
  */
 
 /** PHPExcel */
-require_once dirname(__FILE__) . '/../Classes/PHPExcel.php';
+require_once __DIR__ . '/../Classes/PHPExcel.php';
 
 
 $objPHPExcel = new PHPExcel();

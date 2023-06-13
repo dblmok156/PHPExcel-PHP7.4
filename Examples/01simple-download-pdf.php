@@ -35,7 +35,7 @@ if (PHP_SAPI == 'cli')
 	die('This example should only be run from a Web Browser');
 
 /** Include PHPExcel */
-require_once dirname(__FILE__) . '/../Classes/PHPExcel.php';
+require_once __DIR__ . '/../Classes/PHPExcel.php';
 
 
 //	Change these values to select the Rendering library that you wish to use
@@ -46,7 +46,7 @@ $rendererName = PHPExcel_Settings::PDF_RENDERER_MPDF;
 //$rendererLibrary = 'tcPDF5.9';
 $rendererLibrary = 'mPDF5.4';
 //$rendererLibrary = 'domPDF0.6.0beta3';
-$rendererLibraryPath = dirname(__FILE__).'/../../../libraries/PDF/' . $rendererLibrary;
+$rendererLibraryPath = __DIR__.'/../../../libraries/PDF/' . $rendererLibrary;
 
 
 // Create new PHPExcel object

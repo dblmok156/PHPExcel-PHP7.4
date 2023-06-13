@@ -37,7 +37,7 @@ date_default_timezone_set('Europe/London');
 include "05featuredemo.inc.php";
 
 /** Include PHPExcel_IOFactory */
-require_once dirname(__FILE__) . '/../Classes/PHPExcel/IOFactory.php';
+require_once __DIR__ . '/../Classes/PHPExcel/IOFactory.php';
 
 
 // Set password against the spreadsheet file

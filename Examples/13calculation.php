@@ -37,7 +37,7 @@ date_default_timezone_set('Europe/London');
 mt_srand(1234567890);
 
 /** Include PHPExcel */
-require_once dirname(__FILE__) . '/../Classes/PHPExcel.php';
+require_once __DIR__ . '/../Classes/PHPExcel.php';
 
 
 // List functions

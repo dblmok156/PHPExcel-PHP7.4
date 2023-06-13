@@ -31,7 +31,7 @@ error_reporting(E_ALL);
 date_default_timezone_set('Europe/London');
 
 /** PHPExcel_IOFactory */
-require_once dirname(__FILE__) . '/../Classes/PHPExcel/IOFactory.php';
+require_once __DIR__ . '/../Classes/PHPExcel/IOFactory.php';
 
 // Use PCLZip rather than ZipArchive to read the Excel2007 OfficeOpenXML file
 PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
