@@ -208,6 +208,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
      */
     public function applyFromArray($pStyles = null, $pAdvanced = true)
     {
+        $newXfIndexes = [];
         if (is_array($pStyles)) {
             if ($this->isSupervisor) {
                 $pRange = $this->getSelectedCells();
@@ -422,8 +423,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                     case 'ROW':
                         for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
                             $rowDimension = $this->getActiveSheet()->getRowDimension($row);
-                            $oldXfIndex = $rowDimension->getXfIndex() === null ?
-                                0 : $rowDimension->getXfIndex(); // row without explicit style should be formatted based on default style
+                            $oldXfIndex = $rowDimension->getXfIndex() ?? 0; // row without explicit style should be formatted based on default style
                             $rowDimension->setXfIndex($newXfIndexes[$oldXfIndex]);
                         }
                         break;
@@ -618,7 +618,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
             $hashConditionals .
             $this->protection->getHashCode() .
             ($this->quotePrefix  ? 't' : 'f') .
-            __CLASS__
+            self::class
         );
     }
 

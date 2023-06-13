@@ -5,7 +5,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -929,7 +929,7 @@ class PHPExcel_Calculation_Financial
                 return PHPExcel_Calculation_Functions::NaN();
             }
             //    Set Fixed Depreciation Rate
-            $fixedDepreciationRate = 1 - pow(($salvage / $cost), (1 / $life));
+            $fixedDepreciationRate = 1 - ($salvage / $cost) ** (1 / $life);
             $fixedDepreciationRate = round($fixedDepreciationRate, 3);
 
             //    Loop through each period calculating the depreciation
@@ -995,7 +995,7 @@ class PHPExcel_Calculation_Financial
                 return PHPExcel_Calculation_Functions::NaN();
             }
             //    Set Fixed Depreciation Rate
-            $fixedDepreciationRate = 1 - pow(($salvage / $cost), (1 / $life));
+            $fixedDepreciationRate = 1 - ($salvage / $cost) ** (1 / $life);
             $fixedDepreciationRate = round($fixedDepreciationRate, 3);
 
             //    Loop through each period calculating the depreciation
@@ -1098,7 +1098,7 @@ class PHPExcel_Calculation_Financial
         $dollars = floor($fractional_dollar);
         $cents = fmod($fractional_dollar, 1);
         $cents /= $fraction;
-        $cents *= pow(10, ceil(log10($fraction)));
+        $cents *= 10 ** ceil(log10($fraction));
         return $dollars + $cents;
     }
 
@@ -1135,7 +1135,7 @@ class PHPExcel_Calculation_Financial
         $dollars = floor($decimal_dollar);
         $cents = fmod($decimal_dollar, 1);
         $cents *= $fraction;
-        $cents *= pow(10, -ceil(log10($fraction)));
+        $cents *= 10 ** (-ceil(log10($fraction)));
         return $dollars + $cents;
     }
 
@@ -1165,7 +1165,7 @@ class PHPExcel_Calculation_Financial
             return PHPExcel_Calculation_Functions::NaN();
         }
 
-        return pow((1 + $nominal_rate / $npery), $npery) - 1;
+        return (1 + $nominal_rate / $npery) ** $npery - 1;
     }
 
 
@@ -1206,7 +1206,7 @@ class PHPExcel_Calculation_Financial
 
         // Calculate
         if (!is_null($rate) && $rate != 0) {
-            return -$pv * pow(1 + $rate, $nper) - $pmt * (1 + $rate * $type) * (pow(1 + $rate, $nper) - 1) / $rate;
+            return -$pv * (1 + $rate) ** $nper - $pmt * (1 + $rate * $type) * ((1 + $rate) ** $nper - 1) / $rate;
         }
         return -$pv - $pmt * $nper;
     }
@@ -1470,9 +1470,9 @@ class PHPExcel_Calculation_Financial
         $npv_pos = $npv_neg = 0.0;
         foreach ($values as $i => $v) {
             if ($v >= 0) {
-                $npv_pos += $v / pow($rr, $i);
+                $npv_pos += $v / $rr ** $i;
             } else {
-                $npv_neg += $v / pow($fr, $i);
+                $npv_neg += $v / $fr ** $i;
             }
         }
 
@@ -1480,8 +1480,8 @@ class PHPExcel_Calculation_Financial
             return PHPExcel_Calculation_Functions::VALUE();
         }
 
-        $mirr = pow((-$npv_pos * pow($rr, $n))
-                / ($npv_neg * ($rr)), (1.0 / ($n - 1))) - 1.0;
+        $mirr = ((-$npv_pos * $rr ** $n)
+                / ($npv_neg * ($rr))) ** (1.0 / ($n - 1)) - 1.0;
 
         return (is_finite($mirr) ? $mirr : PHPExcel_Calculation_Functions::VALUE());
     }
@@ -1507,7 +1507,7 @@ class PHPExcel_Calculation_Financial
         }
 
         // Calculate
-        return $npery * (pow($effect_rate + 1, 1 / $npery) - 1);
+        return $npery * (($effect_rate + 1) ** (1 / $npery) - 1);
     }
 
 
@@ -1569,7 +1569,7 @@ class PHPExcel_Calculation_Financial
         for ($i = 1; $i <= count($aArgs); ++$i) {
             // Is it a numeric value?
             if (is_numeric($aArgs[$i - 1])) {
-                $returnValue += $aArgs[$i - 1] / pow(1 + $rate, $i);
+                $returnValue += $aArgs[$i - 1] / (1 + $rate) ** $i;
             }
         }
 
@@ -1604,7 +1604,7 @@ class PHPExcel_Calculation_Financial
 
         // Calculate
         if (!is_null($rate) && $rate != 0) {
-            return (-$fv - $pv * pow(1 + $rate, $nper)) / (1 + $rate * $type) / ((pow(1 + $rate, $nper) - 1) / $rate);
+            return (-$fv - $pv * (1 + $rate) ** $nper) / (1 + $rate * $type) / (((1 + $rate) ** $nper - 1) / $rate);
         }
         return (-$pv - $fv) / $nper;
     }
@@ -1678,9 +1678,9 @@ class PHPExcel_Calculation_Financial
         $rfp    = 100 * ($rate / $frequency);
         $de    = $dsc / $e;
 
-        $result = $redemption / pow($baseYF, (--$n + $de));
+        $result = $redemption / $baseYF ** (--$n + $de);
         for ($k = 0; $k <= $n; ++$k) {
-            $result += $rfp / (pow($baseYF, ($k + $de)));
+            $result += $rfp / ($baseYF ** ($k + $de));
         }
         $result -= $rfp * ($a / $e);
 
@@ -1824,7 +1824,7 @@ class PHPExcel_Calculation_Financial
 
         // Calculate
         if (!is_null($rate) && $rate != 0) {
-            return (-$pmt * (1 + $rate * $type) * ((pow(1 + $rate, $nper) - 1) / $rate) - $fv) / pow(1 + $rate, $nper);
+            return (-$pmt * (1 + $rate * $type) * (((1 + $rate) ** $nper - 1) / $rate) - $fv) / (1 + $rate) ** $nper;
         }
         return -$fv - $pmt * $nper;
     }
@@ -1862,6 +1862,7 @@ class PHPExcel_Calculation_Financial
      **/
     public static function RATE($nper, $pmt, $pv, $fv = 0.0, $type = 0, $guess = 0.1)
     {
+        $f = null;
         $nper    = (int) PHPExcel_Calculation_Functions::flattenSingleValue($nper);
         $pmt    = PHPExcel_Calculation_Functions::flattenSingleValue($pmt);
         $pv        = PHPExcel_Calculation_Functions::flattenSingleValue($pv);
@@ -2238,7 +2239,7 @@ class PHPExcel_Calculation_Financial
             if (!is_numeric($values[$i])) {
                 return PHPExcel_Calculation_Functions::VALUE();
             }
-            $xnpv += $values[$i] / pow(1 + $rate, PHPExcel_Calculation_DateTime::DATEDIF($dates[0], $dates[$i], 'd') / 365);
+            $xnpv += $values[$i] / (1 + $rate) ** (PHPExcel_Calculation_DateTime::DATEDIF($dates[0], $dates[$i], 'd') / 365);
         }
         return (is_finite($xnpv)) ? $xnpv : PHPExcel_Calculation_Functions::VALUE();
     }

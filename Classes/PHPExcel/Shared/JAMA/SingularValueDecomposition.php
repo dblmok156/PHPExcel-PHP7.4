@@ -237,7 +237,7 @@ class SingularValueDecomposition
         // Main iteration loop for the singular values.
         $pp   = $p - 1;
         $iter = 0;
-        $eps  = pow(2.0, -52.0);
+        $eps  = 2.0 ** (-52.0);
 
         while ($p > 0) {
             // Here is where a test for too many iterations would go.
@@ -473,6 +473,7 @@ class SingularValueDecomposition
      */
     public function getS()
     {
+        $S = [];
         for ($i = 0; $i < $this->n; ++$i) {
             for ($j = 0; $j < $this->n; ++$j) {
                 $S[$i][$j] = 0.0;
@@ -515,7 +516,7 @@ class SingularValueDecomposition
      */
     public function rank()
     {
-        $eps = pow(2.0, -52.0);
+        $eps = 2.0 ** (-52.0);
         $tol = max($this->m, $this->n) * $this->s[0] * $eps;
         $r = 0;
         for ($i = 0; $i < count($this->s); ++$i) {

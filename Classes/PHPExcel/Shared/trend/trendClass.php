@@ -80,6 +80,8 @@ class trendClass
 
     public static function calculate($trendType = self::TREND_BEST_FIT, $yValues, $xValues = array(), $const = true)
     {
+        $bestFitValue = [];
+        $bestFit = [];
         //    Calculate number of points in each dataset
         $nY = count($yValues);
         $nX = count($xValues);

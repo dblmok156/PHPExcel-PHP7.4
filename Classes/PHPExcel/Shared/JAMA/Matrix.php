@@ -8,7 +8,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -168,6 +168,9 @@ class PHPExcel_Shared_JAMA_Matrix
      */
     public function getMatrix()
     {
+        $i0 = null;
+        $j0 = null;
+        $RL = [];
         if (func_num_args() > 0) {
             $args = func_get_args();
             $match = implode(",", array_map('gettype', $args));
@@ -939,6 +942,7 @@ class PHPExcel_Shared_JAMA_Matrix
      */
     public function times()
     {
+        $Bcolj = [];
         if (func_num_args() > 0) {
             $args  = func_get_args();
             $match = implode(",", array_map('gettype', $args));
@@ -1067,7 +1071,7 @@ class PHPExcel_Shared_JAMA_Matrix
                         $validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($value);
                     }
                     if ($validValues) {
-                        $this->A[$i][$j] = pow($this->A[$i][$j], $value);
+                        $this->A[$i][$j] = $this->A[$i][$j] ** $value;
                     } else {
                         $this->A[$i][$j] = PHPExcel_Calculation_Functions::NaN();
                     }

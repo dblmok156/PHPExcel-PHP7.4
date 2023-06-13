@@ -2364,6 +2364,7 @@ class PclZip
     // --------------------------------------------------------------------------------
     public function privAddFile($p_filedescr, &$p_header, &$p_options)
     {
+        $v_file = null;
         $v_result=1;
 
         // ----- Working variable
@@ -3593,6 +3594,7 @@ class PclZip
     // --------------------------------------------------------------------------------
     public function privExtractFileUsingTempFile(&$p_entry, &$p_options)
     {
+        $v_file = null;
         $v_result=1;
 
         // ----- Creates a temporary file
@@ -4117,6 +4119,7 @@ class PclZip
     // --------------------------------------------------------------------------------
     public function privReadEndCentralDir(&$p_central_dir)
     {
+        $v_pos = null;
         $v_result=1;
 
         // ----- Go to the end of the zip file

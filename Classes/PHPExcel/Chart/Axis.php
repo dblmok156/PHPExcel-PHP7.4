@@ -544,6 +544,7 @@ class PHPExcel_Chart_Axis extends PHPExcel_Chart_Properties
      */
     public function setSoftEdges($size)
     {
+        $softEdges = [];
         if (!is_null($size)) {
             $softEdges['size'] = (string) $this->getExcelPointsWidth($size);
         }

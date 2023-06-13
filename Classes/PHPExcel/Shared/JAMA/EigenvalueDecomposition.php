@@ -74,6 +74,7 @@ class EigenvalueDecomposition
      */
     private function tred2()
     {
+        $j = null;
         //  This is derived from the Algol procedures tred2 by
         //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
         //  Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
@@ -95,7 +96,7 @@ class EigenvalueDecomposition
                 // Generate Householder vector.
                 for ($k = 0; $k < $i; ++$k) {
                     $this->d[$k] /= $scale;
-                    $h += pow($this->d[$k], 2);
+                    $h += $this->d[$k] ** 2;
                 }
                 $f = $this->d[$i_];
                 $g = sqrt($h);
@@ -189,7 +190,7 @@ class EigenvalueDecomposition
         $this->e[$this->n-1] = 0.0;
         $f = 0.0;
         $tst1 = 0.0;
-        $eps  = pow(2.0, -52.0);
+        $eps  = 2.0 ** (-52.0);
 
         for ($l = 0; $l < $this->n; ++$l) {
             // Find small subdiagonal element
@@ -404,7 +405,7 @@ class EigenvalueDecomposition
         $n  = $nn - 1;
         $low = 0;
         $high = $nn - 1;
-        $eps = pow(2.0, -52.0);
+        $eps = 2.0 ** (-52.0);
         $exshift = 0.0;
         $p = $q = $r = $s = $z = 0;
         // Store roots isolated by balanc and compute matrix norm
@@ -850,6 +851,7 @@ class EigenvalueDecomposition
      */
     public function getD()
     {
+        $D = [];
         for ($i = 0; $i < $this->n; ++$i) {
             $D[$i] = array_fill(0, $this->n, 0.0);
             $D[$i][$i] = $this->d[$i];

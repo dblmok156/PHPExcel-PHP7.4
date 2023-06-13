@@ -180,7 +180,7 @@ class PHPExcel_Worksheet_MemoryDrawing extends PHPExcel_Worksheet_BaseDrawing im
             $this->mimeType .
             $this->uniqueName .
             parent::getHashCode() .
-            __CLASS__
+            self::class
         );
     }
 

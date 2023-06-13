@@ -5,7 +5,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -768,7 +768,7 @@ class PHPExcel_Calculation_Engineering
         //    Split the input into its Real and Imaginary components
         $leadingSign = 0;
         if (strlen($workString) > 0) {
-            $leadingSign = (($workString{0} == '+') || ($workString{0} == '-')) ? 1 : 0;
+            $leadingSign = (($workString[0] == '+') || ($workString[0] == '-')) ? 1 : 0;
         }
         $power = '';
         $realNumber = strtok($workString, '+-');
@@ -809,16 +809,16 @@ class PHPExcel_Calculation_Engineering
      */
     private static function cleanComplex($complexNumber)
     {
-        if ($complexNumber{0} == '+') {
+        if ($complexNumber[0] == '+') {
             $complexNumber = substr($complexNumber, 1);
         }
-        if ($complexNumber{0} == '0') {
+        if ($complexNumber[0] == '0') {
             $complexNumber = substr($complexNumber, 1);
         }
-        if ($complexNumber{0} == '.') {
+        if ($complexNumber[0] == '.') {
             $complexNumber = '0'.$complexNumber;
         }
-        if ($complexNumber{0} == '+') {
+        if ($complexNumber[0] == '+') {
             $complexNumber = substr($complexNumber, 1);
         }
         return $complexNumber;
@@ -876,7 +876,7 @@ class PHPExcel_Calculation_Engineering
             }
 
             if (abs($x) <= 30) {
-                $fResult = $fTerm = pow($x / 2, $ord) / PHPExcel_Calculation_MathTrig::FACT($ord);
+                $fResult = $fTerm = ($x / 2) ** $ord / PHPExcel_Calculation_MathTrig::FACT($ord);
                 $ordK = 1;
                 $fSqrX = ($x * $x) / 4;
                 do {
@@ -930,7 +930,7 @@ class PHPExcel_Calculation_Engineering
 
             $fResult = 0;
             if (abs($x) <= 30) {
-                $fResult = $fTerm = pow($x / 2, $ord) / PHPExcel_Calculation_MathTrig::FACT($ord);
+                $fResult = $fTerm = ($x / 2) ** $ord / PHPExcel_Calculation_MathTrig::FACT($ord);
                 $ordK = 1;
                 $fSqrX = ($x * $x) / -4;
                 do {
@@ -2139,7 +2139,7 @@ class PHPExcel_Calculation_Engineering
         $parsedComplex = self::parseComplex($complexNumber);
 
         $r = sqrt(($parsedComplex['real'] * $parsedComplex['real']) + ($parsedComplex['imaginary'] * $parsedComplex['imaginary']));
-        $rPower = pow($r, $realNumber);
+        $rPower = $r ** $realNumber;
         $theta = self::IMARGUMENT($complexNumber) * $realNumber;
         if ($theta == 0) {
             return 1;

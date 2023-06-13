@@ -454,6 +454,7 @@ class PHPExcel_Chart_GridLines extends PHPExcel_Chart_Properties
      */
     public function setSoftEdgesSize($size)
     {
+        $softEdges = [];
         if (!is_null($size)) {
             $this->activateObject();
             $softEdges['size'] = (string) $this->getExcelPointsWidth($size);

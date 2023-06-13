@@ -1355,6 +1355,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
      */
     private function writeColinfo($col_array)
     {
+        $colFirst = null;
+        $colLast = null;
         if (isset($col_array[0])) {
             $colFirst = $col_array[0];
         }
@@ -1702,10 +1704,10 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
             return;
         }
 
-        $y       = isset($panes[0]) ? $panes[0] : null;
-        $x       = isset($panes[1]) ? $panes[1] : null;
-        $rwTop   = isset($panes[2]) ? $panes[2] : null;
-        $colLeft = isset($panes[3]) ? $panes[3] : null;
+        $y       = $panes[0] ?? null;
+        $x       = $panes[1] ?? null;
+        $rwTop   = $panes[2] ?? null;
+        $colLeft = $panes[3] ?? null;
         if (count($panes) > 4) { // if Active pane was received
             $pnnAct = $panes[4];
         } else {
@@ -1777,8 +1779,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 
         $iPaperSize   = $this->phpSheet->getPageSetup()->getPaperSize();    // Paper size
 
-        $iScale = $this->phpSheet->getPageSetup()->getScale() ?
-            $this->phpSheet->getPageSetup()->getScale() : 100;   // Print scaling factor
+        $iScale = $this->phpSheet->getPageSetup()->getScale() ?: 100;   // Print scaling factor
 
         $iPageStart   = 0x01;                 // Starting page number
         $iFitWidth    = (int) $this->phpSheet->getPageSetup()->getFitToWidth();    // Fit to number of pages wide
@@ -3017,6 +3018,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
      */
     private function writeCFRule(PHPExcel_Style_Conditional $conditional)
     {
+        $type = null;
+        $operatorType = null;
         $record      = 0x01B1;               // Record identifier
 
         // $type : Type of the CF

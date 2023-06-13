@@ -111,8 +111,8 @@ class PHPExcel_Shared_OLE
             throw new PHPExcel_Reader_Exception("Only Little-Endian encoding is supported.");
         }
         // Size of blocks and short blocks in bytes
-        $this->bigBlockSize = pow(2, self::_readInt2($fh));
-        $this->smallBlockSize  = pow(2, self::_readInt2($fh));
+        $this->bigBlockSize = 2 ** self::_readInt2($fh);
+        $this->smallBlockSize  = 2 ** self::_readInt2($fh);
 
         // Skip UID, revision number and version number
         fseek($fh, 44);
@@ -264,6 +264,7 @@ class PHPExcel_Shared_OLE
     */
     public function _readPpsWks($blockId)
     {
+        $pps = null;
         $fh = $this->getStream($blockId);
         for ($pos = 0;; $pos += 128) {
             fseek($fh, $pos, SEEK_SET);
@@ -285,7 +286,7 @@ class PHPExcel_Shared_OLE
                     $pps = new PHPExcel_Shared_OLE_PPS_File($name);
                     break;
                 default:
-                    continue;
+                    break;
             }
             fseek($fh, 1, SEEK_CUR);
             $pps->Type    = $type;
@@ -464,7 +465,7 @@ class PHPExcel_Shared_OLE
         }
 
         // factor used for separating numbers into 4 bytes parts
-        $factor = pow(2, 32);
+        $factor = 2 ** 32;
 
         // days from 1-1-1601 until the beggining of UNIX era
         $days = 134774;
@@ -508,7 +509,7 @@ class PHPExcel_Shared_OLE
         }
 
         // factor used for separating numbers into 4 bytes parts
-        $factor = pow(2, 32);
+        $factor = 2 ** 32;
         list(, $high_part) = unpack('V', substr($string, 4, 4));
         list(, $low_part) = unpack('V', substr($string, 0, 4));
 

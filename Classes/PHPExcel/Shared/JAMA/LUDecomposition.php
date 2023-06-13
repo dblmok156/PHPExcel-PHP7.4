@@ -126,6 +126,7 @@ class PHPExcel_Shared_JAMA_LUDecomposition
      */
     public function getL()
     {
+        $L = [];
         for ($i = 0; $i < $this->m; ++$i) {
             for ($j = 0; $j < $this->n; ++$j) {
                 if ($i > $j) {
@@ -147,6 +148,7 @@ class PHPExcel_Shared_JAMA_LUDecomposition
      */
     public function getU()
     {
+        $U = [];
         for ($i = 0; $i < $this->n; ++$i) {
             for ($j = 0; $j < $this->n; ++$j) {
                 if ($i <= $j) {

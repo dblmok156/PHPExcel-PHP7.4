@@ -1054,6 +1054,7 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
      */
     private function writeCell(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null, $pCellAddress = null, $pStringTable = null, $pFlippedStringTable = null)
     {
+        $calculatedValue = null;
         if (is_array($pStringTable) && is_array($pFlippedStringTable)) {
             // Cell
             $pCell = $pSheet->getCell($pCellAddress);

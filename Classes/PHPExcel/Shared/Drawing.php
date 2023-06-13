@@ -177,6 +177,8 @@ class PHPExcel_Shared_Drawing
      */
     public static function imagecreatefrombmp($p_sFile)
     {
+        $width = null;
+        $height = null;
         //    Load the image into a string
         $file = fopen($p_sFile, "rb");
         $read = fread($file, 10);

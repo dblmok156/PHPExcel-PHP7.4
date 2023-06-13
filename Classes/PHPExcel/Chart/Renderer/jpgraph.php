@@ -56,7 +56,7 @@ class PHPExcel_Chart_Renderer_jpgraph
 
     private $chart;
 
-    private $graph;
+    private $graph = null;
 
     private static $plotColour = 0;
 
@@ -123,6 +123,7 @@ class PHPExcel_Chart_Renderer_jpgraph
 
     private function percentageSumCalculation($groupID, $seriesCount)
     {
+        $sumValues = [];
         //    Adjust our values to a percentage value across all series in the group
         for ($i = 0; $i < $seriesCount; ++$i) {
             if ($i == 0) {
@@ -267,6 +268,7 @@ class PHPExcel_Chart_Renderer_jpgraph
 
     private function renderPlotLine($groupID, $filled = false, $combination = false, $dimensions = '2d')
     {
+        $sumValues = null;
         $grouping = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotGrouping();
 
         $labelCount = count($this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex(0)->getPointCount());
@@ -331,6 +333,7 @@ class PHPExcel_Chart_Renderer_jpgraph
 
     private function renderPlotBar($groupID, $dimensions = '2d')
     {
+        $sumValues = null;
         $rotation = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotDirection();
         //    Rotate for bar rather than column chart
         if (($groupID == 0) && ($rotation == 'bar')) {
@@ -625,6 +628,7 @@ class PHPExcel_Chart_Renderer_jpgraph
 
     private function renderPieChart($groupCount, $dimensions = '2d', $doughnut = false, $multiplePlots = false)
     {
+        $datasetLabels = null;
         require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_pie.php');
         if ($dimensions == '3d') {
             require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_pie3d.php');
@@ -859,7 +863,7 @@ class PHPExcel_Chart_Renderer_jpgraph
                 $this->renderContourChart($groupCount, $dimensions);
                 break;
             case 'stockChart':
-                $this->renderStockChart($groupCount, $dimensions);
+                $this->renderStockChart($groupCount);
                 break;
             default:
                 echo $chartType.' is not yet implemented<br />';
@@ -877,7 +881,6 @@ class PHPExcel_Chart_Renderer_jpgraph
      */
     public function __construct(PHPExcel_Chart $chart)
     {
-        $this->graph    = null;
         $this->chart    = $chart;
     }
 }

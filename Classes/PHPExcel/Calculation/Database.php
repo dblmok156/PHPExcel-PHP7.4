@@ -5,7 +5,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -64,7 +64,7 @@ class PHPExcel_Calculation_Database
             return $keys[$field-1];
         }
         $key = array_search($field, $fieldNames);
-        return ($key) ? $key : null;
+        return $key ?: null;
     }
 
     /**

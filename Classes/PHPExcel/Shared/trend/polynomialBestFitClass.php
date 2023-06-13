@@ -70,7 +70,7 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
         $slope = $this->getSlope();
         foreach ($slope as $key => $value) {
             if ($value != 0.0) {
-                $retVal += $value * pow($xValue, $key + 1);
+                $retVal += $value * $xValue ** ($key + 1);
             }
         }
         return $retVal;
@@ -148,6 +148,9 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
      */
     private function polynomialRegression($order, $yValues, $xValues, $const)
     {
+        $yy_sum = null;
+        $A = [];
+        $B = [];
         // calculate sums
         $x_sum = array_sum($xValues);
         $y_sum = array_sum($yValues);
@@ -167,7 +170,7 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
          */
         for ($i = 0; $i < $this->valueCount; ++$i) {
             for ($j = 0; $j <= $order; ++$j) {
-                $A[$i][$j] = pow($xValues[$i], $j);
+                $A[$i][$j] = $xValues[$i] ** $j;
             }
         }
         for ($i=0; $i < $this->valueCount; ++$i) {
@@ -180,7 +183,7 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
         $coefficients = array();
         for ($i = 0; $i < $C->m; ++$i) {
             $r = $C->get($i, 0);
-            if (abs($r) <= pow(10, -9)) {
+            if (abs($r) <= 10 ** (-9)) {
                 $r = 0;
             }
             $coefficients[] = $r;

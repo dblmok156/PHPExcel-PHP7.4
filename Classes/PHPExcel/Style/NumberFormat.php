@@ -378,7 +378,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
         return md5(
             $this->formatCode .
             $this->builtInFormatCode .
-            __CLASS__
+            self::class
         );
     }
 
@@ -511,7 +511,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
         $integerPart = floor(abs($value));
         $decimalPart = trim(fmod(abs($value), 1), '0.');
         $decimalLength = strlen($decimalPart);
-        $decimalDivisor = pow(10, $decimalLength);
+        $decimalDivisor = 10 ** $decimalLength;
 
         $GCD = PHPExcel_Calculation_MathTrig::GCD($decimalPart, $decimalDivisor);
 
@@ -531,6 +531,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 
     private static function complexNumberFormatMask($number, $mask, $level = 0)
     {
+        $offset = null;
         $sign = ($number < 0.0);
         $number = abs($number);
         if (strpos($mask, '.') !== false) {
@@ -670,7 +671,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
                 $scale = 1; // same as no scale
                 $matches = array();
                 if (preg_match('/(#|0)(,+)/', $format, $matches)) {
-                    $scale = pow(1000, strlen($matches[2]));
+                    $scale = 1000 ** strlen($matches[2]);
 
                     // strip the commas
                     $format = preg_replace('/0,+/', '0', $format);

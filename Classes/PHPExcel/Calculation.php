@@ -5,7 +5,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -2070,7 +2070,7 @@ class PHPExcel_Calculation
 
     public function __construct(PHPExcel $workbook = null)
     {
-        $this->delta = 1 * pow(10, 0 - ini_get('precision'));
+        $this->delta = 1 * 10 ** (0 - ini_get('precision'));
 
         $this->workbook = $workbook;
         $this->cyclicReferenceStack = new PHPExcel_CalcEngine_CyclicReferenceStack();
@@ -3134,6 +3134,7 @@ class PHPExcel_Calculation
     // Convert infix to postfix notation
     private function _parseFormula($formula, PHPExcel_Cell $pCell = null)
     {
+        $expectedArgumentCountString = null;
         if (($formula = $this->convertMatrixReferences(trim($formula))) === false) {
             return false;
         }
@@ -3370,7 +3371,7 @@ class PHPExcel_Calculation
                     if ($testPrevOp['value'] == ':') {
                         $startRowColRef = $output[count($output)-1]['value'];
                         $rangeWS1 = '';
-                        if (strpos('!', $startRowColRef) !== false) {
+                        if (strpos('!', (string) $startRowColRef) !== false) {
                             list($rangeWS1, $startRowColRef) = explode('!', $startRowColRef);
                         }
                         if ($rangeWS1 != '') {
@@ -3645,7 +3646,7 @@ class PHPExcel_Calculation
                                 $result = '#VALUE!';
                             }
                         } else {
-                            $result = '"'.str_replace('""', '"', self::unwrapResult($operand1, '"').self::unwrapResult($operand2, '"')).'"';
+                            $result = '"'.str_replace('""', '"', self::unwrapResult($operand1).self::unwrapResult($operand2)).'"';
                         }
                         $this->_debugLog->writeDebugLog('Evaluation Result is ', $this->showTypeDetails($result));
                         $stack->push('Value', $result);
@@ -3959,6 +3960,7 @@ class PHPExcel_Calculation
 
     private function executeBinaryComparisonOperation($cellID, $operand1, $operand2, $operation, &$stack, $recursingArrays = false)
     {
+        $result = [];
         //    If we're dealing with matrix operations, we want a matrix result
         if ((is_array($operand1)) || (is_array($operand2))) {
             $result = array();
@@ -4093,6 +4095,7 @@ class PHPExcel_Calculation
 
     private function executeNumericBinaryOperation($cellID, $operand1, $operand2, $operation, $matrixFunction, &$stack)
     {
+        $result = null;
         //    Validate the two operands
         if (!$this->validateBinaryOperand($cellID, $operand1, $stack)) {
             return false;
@@ -4151,7 +4154,7 @@ class PHPExcel_Calculation
                         break;
                     //    Power
                     case '^':
-                        $result = pow($operand1, $operand2);
+                        $result = $operand1 ** $operand2;
                         break;
                 }
             }

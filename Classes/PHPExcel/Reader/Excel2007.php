@@ -5,7 +5,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -1597,7 +1597,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
                                                 $newRangeSets = array();
                                                 foreach ($rangeSets as $rangeSet) {
                                                     $range = explode('!', $rangeSet);    // FIXME: what if sheetname contains exclamation mark?
-                                                    $rangeSet = isset($range[1]) ? $range[1] : $range[0];
+                                                    $rangeSet = $range[1] ?? $range[0];
                                                     if (strpos($rangeSet, ':') === false) {
                                                         $rangeSet = $rangeSet . ':' . $rangeSet;
                                                     }
@@ -1672,7 +1672,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 
                                         // Modify range
                                         $range = explode('!', $extractedRange);
-                                        $extractedRange = isset($range[1]) ? $range[1] : $range[0];
+                                        $extractedRange = $range[1] ?? $range[0];
                                     }
 
                                     if ($locatedSheet !== null) {
@@ -1999,7 +1999,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 
     private static function getArrayItem($array, $key = 0)
     {
-        return (isset($array[$key]) ? $array[$key] : null);
+        return ($array[$key] ?? null);
     }
 
     private static function dirAdd($base, $add)

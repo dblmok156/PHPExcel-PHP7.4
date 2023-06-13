@@ -46,7 +46,7 @@ class PHPExcel_Power_Best_Fit extends PHPExcel_Best_Fit
      **/
     public function getValueOfYForX($xValue)
     {
-        return $this->getIntersect() * pow(($xValue - $this->xOffset), $this->getSlope());
+        return $this->getIntersect() * ($xValue - $this->xOffset) ** $this->getSlope();
     }
 
 
@@ -58,7 +58,7 @@ class PHPExcel_Power_Best_Fit extends PHPExcel_Best_Fit
      **/
     public function getValueOfXForY($yValue)
     {
-        return pow((($yValue + $this->yOffset) / $this->getIntersect()), (1 / $this->getSlope()));
+        return (($yValue + $this->yOffset) / $this->getIntersect()) ** (1 / $this->getSlope());
     }
 
 

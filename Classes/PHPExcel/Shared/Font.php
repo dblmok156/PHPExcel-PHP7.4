@@ -251,6 +251,7 @@ class PHPExcel_Shared_Font
      */
     public static function calculateColumnWidth(PHPExcel_Style_Font $font, $cellText = '', $rotation = 0, PHPExcel_Style_Font $defaultFont = null)
     {
+        $columnWidth = null;
         // If it is rich text, use plain text
         if ($cellText instanceof PHPExcel_RichText) {
             $cellText = $cellText->getPlainText();

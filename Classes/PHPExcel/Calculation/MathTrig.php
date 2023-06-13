@@ -5,7 +5,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -95,8 +95,8 @@ class PHPExcel_Calculation_MathTrig
         $xCoordinate = PHPExcel_Calculation_Functions::flattenSingleValue($xCoordinate);
         $yCoordinate = PHPExcel_Calculation_Functions::flattenSingleValue($yCoordinate);
 
-        $xCoordinate = ($xCoordinate !== null) ? $xCoordinate : 0.0;
-        $yCoordinate = ($yCoordinate !== null) ? $yCoordinate : 0.0;
+        $xCoordinate = $xCoordinate ?? 0.0;
+        $yCoordinate = $yCoordinate ?? 0.0;
 
         if (((is_numeric($xCoordinate)) || (is_bool($xCoordinate))) &&
             ((is_numeric($yCoordinate)))  || (is_bool($yCoordinate))) {
@@ -390,7 +390,7 @@ class PHPExcel_Calculation_MathTrig
 
             $returnValue = 1;
             foreach ($mergedArray as $key => $value) {
-                $returnValue *= pow($key, $value);
+                $returnValue *= $key ** $value;
             }
             return $returnValue;
         } else {
@@ -404,7 +404,7 @@ class PHPExcel_Calculation_MathTrig
                     }
                 }
             }
-            return pow($key, $value);
+            return $key ** $value;
         }
     }
 
@@ -472,7 +472,7 @@ class PHPExcel_Calculation_MathTrig
             $myCountedFactors = array_count_values($myFactors);
             $myPoweredFactors = array();
             foreach ($myCountedFactors as $myCountedFactor => $myCountedPower) {
-                $myPoweredFactors[$myCountedFactor] = pow($myCountedFactor, $myCountedPower);
+                $myPoweredFactors[$myCountedFactor] = $myCountedFactor ** $myCountedPower;
             }
             foreach ($myPoweredFactors as $myPoweredValue => $myPoweredFactor) {
                 if (array_key_exists($myPoweredValue, $allPoweredFactors)) {
@@ -631,6 +631,7 @@ class PHPExcel_Calculation_MathTrig
      */
     public static function MMULT($matrixData1, $matrixData2)
     {
+        $columnA = null;
         $matrixAData = $matrixBData = array();
         if (!is_array($matrixData1)) {
             $matrixData1 = array(array($matrixData1));
@@ -827,7 +828,7 @@ class PHPExcel_Calculation_MathTrig
         }
 
         // Return
-        $result = pow($x, $y);
+        $result = $x ** $y;
         return (!is_nan($result) && !is_infinite($result)) ? $result : PHPExcel_Calculation_Functions::NaN();
     }
 
@@ -978,7 +979,7 @@ class PHPExcel_Calculation_MathTrig
         $digits    = PHPExcel_Calculation_Functions::flattenSingleValue($digits);
 
         if ((is_numeric($number)) && (is_numeric($digits))) {
-            $significance = pow(10, (int) $digits);
+            $significance = 10 ** ((int) $digits);
             if ($number < 0.0) {
                 return floor($number * $significance) / $significance;
             } else {
@@ -1004,7 +1005,7 @@ class PHPExcel_Calculation_MathTrig
         $digits    = PHPExcel_Calculation_Functions::flattenSingleValue($digits);
 
         if ((is_numeric($number)) && (is_numeric($digits))) {
-            $significance = pow(10, (int) $digits);
+            $significance = 10 ** ((int) $digits);
             if ($number < 0.0) {
                 return ceil($number * $significance) / $significance;
             } else {
@@ -1043,7 +1044,7 @@ class PHPExcel_Calculation_MathTrig
             foreach ($aArgs as $arg) {
                 // Is it a numeric value?
                 if ((is_numeric($arg)) && (!is_string($arg))) {
-                    $returnValue += $arg * pow($x, $n + ($m * $i++));
+                    $returnValue += $arg * $x ** ($n + ($m * $i++));
                 } else {
                     return PHPExcel_Calculation_Functions::VALUE();
                 }
@@ -1235,7 +1236,9 @@ class PHPExcel_Calculation_MathTrig
 	 *	@return	float
 	 */
 	public static function SUMIFS() {
-		$arrayList = func_get_args();
+        $aArgsArray = [];
+        $conditions = [];
+        $arrayList = func_get_args();
 
 		$sumArgs = PHPExcel_Calculation_Functions::flattenArray(array_shift($arrayList));
 
@@ -1448,7 +1451,7 @@ class PHPExcel_Calculation_MathTrig
         $digits = floor($digits);
 
         // Truncate
-        $adjust = pow(10, $digits);
+        $adjust = 10 ** $digits;
 
         if (($digits > 0) && (rtrim(intval((abs($value) - abs(intval($value))) * $adjust), '0') < $adjust/10)) {
             return $value;
